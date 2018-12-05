@@ -10,4 +10,5 @@ public:
 
 	int shield = 4;
 	int lives = 3;
+	float speedMultiplier = 180.0f;
 };

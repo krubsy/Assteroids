@@ -51,8 +51,6 @@ float InputHandler::getMouseScroll() const
 	//TO DO: Implement mouse scroll capabilities
 	return 0.0f;
 }
-
-
 //Keyboard
 bool InputHandler::getKeyPress(KeyCode key) const
 {

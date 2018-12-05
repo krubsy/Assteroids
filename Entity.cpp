@@ -19,11 +19,14 @@ void Entity::addForce(MyVector force)
 
 void Entity::update(float deltaTime) {
 
-	rotation = mat4::Identity;
+	rotation = mat4("Identity");
 	rotation.RotateZ(theta);
+	if( sqrt(acceleration.getLength()) > (maxAcceleration * maxAcceleration))
+		acceleration = acceleration.getNormalized() * maxAcceleration;
 	velocity += acceleration * deltaTime;
+	if (sqrt(velocity.getLength()) > (maxVelocity * maxVelocity))
+		velocity = velocity.getNormalized() * maxVelocity;
 	MyVector position = MyVector::toOurVec(sprite->getPosition());
-
 	position += velocity * deltaTime;
 	sprite->setPosition(*(Vec2*)&position);
 	acceleration = MyVector(0.0f);
@@ -31,6 +34,7 @@ void Entity::update(float deltaTime) {
 
 Entity::Entity()
 {
+	
 }
 
 Entity::~Entity() {

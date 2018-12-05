@@ -30,6 +30,6 @@ protected:
 	Sprite* sprite;
 	
 	float theta = 0.0f;
-	float maxVelocity = 10.0f;
-	float maxAcceleration = 10.0f;
+	float maxVelocity = 100.0f;
+	float maxAcceleration = 100.0f;
 };

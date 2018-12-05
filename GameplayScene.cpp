@@ -89,8 +89,9 @@ void GameplayScene::initSprites()
 	this->addChild(spr_Background, -100); //Add the sprite, pushed way to the back
 	this->addChild(spr_Background2, -100);
 
-	ship = new Ship(MyVector(250.0f, 250.0f), "images/vector.jpg");
-	ship->getBody()->setDynamic(true);
+	ship = new Ship(MyVector(650.0f, 650.0f), "images/vector.jpg");
+	//ship->getBody()->setDynamic(true);
+	ship->getSprite()->setAnchorPoint(Vec2(0.5f, 0.5f));
 	this->addChild(ship->getSprite());
 
 	//Init the camera target
@@ -211,11 +212,23 @@ void GameplayScene::initPauseMenu()
 void GameplayScene::update(float deltaTime)
 {
 	
-	if (input.pressed[EventKeyboard::KeyCode::KEY_W]) {
-		vec4 force = ship->rotation * vec4(0.0f, 2.0f, 0.0f, 0.0f);
-		ship->addForce(MyVector(0.0f, 10.0f));
+	if (input.pressed[(int)EventKeyboard::KeyCode::KEY_W]) {
+		vec4 force = ship->rotation * vec4(0.0f,ship->speedMultiplier, 0.0f, 0.0f);
+		ship->addForce(MyVector(force.x,force.y));
+	}
+	if (input.pressed[(int)EventKeyboard::KeyCode::KEY_S]) {
+		vec4 force = ship->rotation * vec4(0.0f, -ship->speedMultiplier, 0.0f, 0.0f);
+		ship->addForce(MyVector(force.x, force.y));
+	}
+	if (input.pressed[(int)EventKeyboard::KeyCode::KEY_A]) {
+		ship->setTheta(ship->getTheta() + 1.0f * deltaTime);
+	}
+	if (input.pressed[(int)EventKeyboard::KeyCode::KEY_D]) {
+		ship->setTheta(ship->getTheta() - 1.0f * deltaTime);
 	}
 	ship->update(deltaTime);
+
+	//ship->getSprite()->setAdditionalTransform((Mat4*)(&ship->rotation));
 
 	//If the active bird is on the slingshot, it shouldn't be affected by gravity & other physics forces
 	//if (activeBird->getState() == onSlingshot)
@@ -409,7 +422,7 @@ void GameplayScene::keyDownCallback(EventKeyboard::KeyCode keyCode, Event* event
 		}
 	}
 	else if (keyCode == EventKeyboard::KeyCode::KEY_LEFT_ARROW) {
-		ship->setTheta(ship->getTheta() - 10);
+		
 	}
 
 

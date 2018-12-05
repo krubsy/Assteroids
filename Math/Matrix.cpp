@@ -26,7 +26,6 @@ mat4::mat4()
 	col[3][1] = 0.0f;
 	col[3][2] = 0.0f;
 	col[3][3] = 1.0f;
-
 }
 
 mat4::mat4(const vec4 right, const vec4 up, const vec4 dir, const vec4 pos)
@@ -56,6 +55,32 @@ mat4::mat4(float f0, float f1, float f2, float f3, float f4, float f5, float f6,
 	col[3][2] = f14;
 	col[3][3] = f15;
 }
+
+mat4::mat4(std::string s) {
+	if (s == "Identity") {
+		col[0][0] = 1.0f;
+		col[0][1] = 0.0f;
+		col[0][2] = 0.0f;
+		col[0][3] = 0.0f;
+
+		col[1][0] = 0.0f;
+		col[1][1] = 1.0f;
+		col[1][2] = 0.0f;
+		col[1][3] = 0.0f;
+
+		col[2][0] = 0.0f;
+		col[2][1] = 0.0f;
+		col[2][2] = 1.0f;
+		col[2][3] = 0.0f;
+
+		col[3][0] = 0.0f;
+		col[3][1] = 0.0f;
+		col[3][2] = 0.0f;
+		col[3][3] = 1.0f;
+
+	}
+}
+
 
 const vec4 mat4::operator[](const int index) const
 {
@@ -108,36 +133,39 @@ mat4 mat4::operator*(const mat4 & m) const
 		col[0][3] * m[3][0] + col[1][3] * m[3][1] + col[2][3] * m[3][2] + col[3][3] * m[3][3]);
 }
 
+vec4 mat4::operator*(const vec4 & v) const //Multiplies a mat4 by a vec4. Returns vec4
+{
+	return vec4(
+		col[0][0] * v[0] + col[0][1] * v[1] + col[0][2] * v[2] + col[0][3] * v[3],
+		col[1][0] * v[0] + col[1][1] * v[1] + col[1][2] * v[2] + col[1][3] * v[3],
+		col[2][0] * v[0] + col[2][1] * v[1] + col[2][2] * v[2] + col[2][3] * v[3],
+		col[3][0] * v[0] + col[3][1] * v[1] + col[3][2] * v[2] + col[3][3] * v[3]);
+}
+
 void mat4::RotateZ(float degrees)
 {
+	col[0][0] = col[0][0] * cos(degrees) - col[0][1] * sin(degrees);
+	col[0][1] = col[0][1] * sin(degrees) + col[0][0] * cos(degrees);
+	col[0][2] = 0;
+	col[0][3] = 0;
 
-	//[cos(-Z Angle) - sin(-Z Angle) 0 0]
-	//[sin(-Z Angle) cos(-Z Angle) 0 0]
-	//[0 0 1 0]
-	//[0 0 0 1]
-
-	mat4 temp;
-	temp[0][0] = cos(-degrees);
-	temp[1][0] = sin(-degrees);
-	temp[2][0] = 0;
-	temp[3][0] = 0;
-
-	temp[0][1] = -sin(-degrees);
-	temp[1][1] = cos(-degrees);
-	temp[2][1] = 0;
-	temp[3][1] = 0;
-
-	temp[0][2] = 0;
-	temp[1][2] = 0;
-	temp[2][2] = 1;
-	temp[3][2] = 0;
-
-	temp[0][3] = 0;
-	temp[1][3] = 0;
-	temp[2][3] = 0;
-	temp[3][3] = 1;
-
+	col[1][0] = col[1][0] * cos(degrees) - col[1][1] * sin(degrees);
+	col[1][1] = col[1][1] * sin(degrees) + col[1][0] * cos(degrees);
+	col[1][2] = 0;
+	col[1][3] = 0;
+	
+	col[2][0] = col[2][0] * cos(degrees) - col[2][1] * sin(degrees);
+	col[2][1] = col[2][1] * sin(degrees) + col[2][0] * cos(degrees);
+	col[2][2] = 1;
+	col[2][3] = 0;
+	
+	col[3][0] = col[3][0] * cos(degrees) - col[3][1] * sin(degrees);
+	col[3][1] = col[3][1] * sin(degrees) + col[3][0] * cos(degrees);
+	col[3][2] = 0;
+	col[3][3] = 0;
 }
+
+
 mat4 mat4::getTranspose() const
 {
 	mat4 temp;
