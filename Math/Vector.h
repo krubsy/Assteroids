@@ -2,43 +2,57 @@
 #include "cocos2d.h"
 using namespace cocos2d;
 
-typedef class Vector{
+class MyVector{
 public:
-	Vector::Vector();
-	Vector::Vector(float);
+	MyVector::MyVector();
+	MyVector::MyVector(float);
+	MyVector::MyVector(float x, float y) { Y = y; X = x; }
 
 
-	static Vector toOurVec(cocos2d::Vec2 v) {
-		Vector result;
+	static MyVector toOurVec(cocos2d::Vec2 v) {
+		MyVector result;
 		result.X = v.x;
 		result.Y = v.y;
 		return result;
 	}
 
-	static cocos2d::Vec2 toCocVec(vec2 v) {
+	static cocos2d::Vec2 toCocVec(MyVector v) {
 		cocos2d::Vec2 result;
 		result.x = v.X;
 		result.y = v.Y;
 		return result;
 	}
 
-	void operator+=(const Vector temp){
+	void operator+=(const MyVector temp){
 		
 		this->X = this->X + temp.X;
 		this->Y = this->Y + temp.Y;
 	}
 
-	Vector operator*(const Vector temp) {
-		Vector result;
+	MyVector operator*(const MyVector temp) {
+		MyVector result;
 		result.X = this->X * temp.X;
 		result.Y = this->Y * temp.Y;
 		return result;
 	}
 
+	MyVector operator-(const MyVector temp) const {
+		MyVector result;
+		result.X = this->X - temp.X;
+		result.Y = this->Y - temp.Y;
+		return result;
+	}
+
+	MyVector getNormalized() {
+		MyVector temp;
+		return temp;
+	}
+
 	float X;
 	float Y;
+	float radius = 32;
 
-}vec2;
+};
 
 
 //---------------------------------------------------------------------------------------------------
